@@ -57,13 +57,16 @@
     <script src="assets/js/custom.js"></script>
 
     <!-- Vue JS Link -->
+    <script src="assets/js/axios.min.js"></script>
     <script src="assets/js/vue.js"></script>
 
     <!-- vue js create instance -->
     <script>
       const root = new Vue({
         el: "#root",
-        data: {},
+        data: {
+          users: [],
+        },
         methods: {},
         created: function () {},
       });
