@@ -26,11 +26,11 @@
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>1</td>
-                  <td>Asraful Haque</td>
-                  <td>haq@gmail.com</td>
-                  <td>01717700811</td>
+                <tr v-for="(user, i) in users">
+                  <td>{{ i+1 }}</td>
+                  <td>{{ user.name }}</td>
+                  <td>{{ user.email }}</td>
+                  <td>{{ user.cell }}</td>
                   <td>
                     <img
                       src="assets/media/img/pp_photo/istockphoto-615279718-612x612.jpg"
@@ -67,8 +67,17 @@
         data: {
           users: [],
         },
-        methods: {},
-        created: function () {},
+        methods: {
+          //get all user data method
+          getAllUser: function () {
+            axios.get("inc/data.php").then(function (response) {
+              root.users = response.data;
+            });
+          },
+        },
+        created: function () {
+          this.getAllUser();
+        },
       });
     </script>
   </body>
