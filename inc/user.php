@@ -34,5 +34,17 @@ if ($action == 'create') {
     $email = $data->email;
     $cell = $data->cell;
 
+    //insert data query
     $conn->query("INSERT INTO users (name, email, cell) VALUES ('$name', '$email', '$cell')");
+}
+
+/**
+ * User data delete
+ */
+if ($action == 'delete') {
+    //Get url user id
+    $id = $_GET['id'];
+
+    //delete query
+    $conn->query("DELETE FROM users WHERE id='$id'");
 }

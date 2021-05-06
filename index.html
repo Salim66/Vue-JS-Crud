@@ -160,10 +160,12 @@
             event.preventDefault();
             let con = confirm("Are you sure you want to delete?");
             if (con) {
-              axios.get("inc/delete.php?id=" + id).then(function (response) {
-                console.log(response.data);
-                root.getAllUser();
-              });
+              axios
+                .get("inc/user.php?action=delete&id=" + id)
+                .then(function (response) {
+                  console.log(response.data);
+                  root.getAllUser();
+                });
             } else {
               alert("You are safe!");
             }
