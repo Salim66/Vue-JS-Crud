@@ -125,7 +125,7 @@
         methods: {
           //get all user data method
           getAllUser: function () {
-            axios.get("inc/data.php").then(function (response) {
+            axios.get("inc/user.php?action=read").then(function (response) {
               root.users = response.data;
             });
           },
