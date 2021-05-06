@@ -3,6 +3,10 @@
 //Server connection
 $conn = new mysqli('localhost', 'root', '', 'crud-v');
 
+//get user data fetch
+$data = json_decode(file_get_contents('php://input'));
+
+
 //get url action data
 if (isset($_GET['action'])) {
     $action = $_GET['action'];
@@ -20,4 +24,15 @@ if ($action == 'read') {
     }
 
     echo json_encode($all_data);
+}
+
+/**
+ * User data add
+ */
+if ($action == 'create') {
+    $name = $data->name;
+    $email = $data->email;
+    $cell = $data->cell;
+
+    $conn->query("INSERT INTO users (name, email, cell) VALUES ('$name', '$email', '$cell')");
 }

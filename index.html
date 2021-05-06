@@ -131,20 +131,29 @@
           },
           //add new user data method
           addNewUser: function () {
-            axios
-              .post("inc/add.php", {
-                name: root.user.name,
-                email: root.user.email,
-                cell: root.user.cell,
-              })
-              .then(function (response) {
-                console.log(response.data);
-                root.getAllUser();
-                //data successfully add then blank the form
-                root.user.name = "";
-                root.user.email = "";
-                root.user.cell = "";
-              });
+            //validation form
+            if (
+              this.user.name == "" ||
+              this.user.email == "" ||
+              this.user.cell == ""
+            ) {
+              alert("All fields are required!");
+            } else {
+              axios
+                .post("inc/user.php?action=create", {
+                  name: root.user.name,
+                  email: root.user.email,
+                  cell: root.user.cell,
+                })
+                .then(function (response) {
+                  console.log(response.data);
+                  root.getAllUser();
+                  //data successfully add then blank the form
+                  root.user.name = "";
+                  root.user.email = "";
+                  root.user.cell = "";
+                });
+            }
           },
           //delete user method
           deleteUser: function (id, event) {
