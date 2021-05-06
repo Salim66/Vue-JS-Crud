@@ -11,6 +11,7 @@
   <body>
     <div id="root">
       <div class="wrap-table">
+        <!-- Add new user template -->
         <div class="card mb-3" style="width: 400px; margin: auto">
           <div class="card-body">
             <h2>Add new user</h2>
@@ -18,8 +19,8 @@
             <div class="from-group">
               <label for="">Name</label>
               <input
+                v-model="user.name"
                 type="text"
-                name="name"
                 class="form-control"
                 placeholder="Name"
               />
@@ -27,8 +28,8 @@
             <div class="from-group">
               <label for="">Email</label>
               <input
+                v-model="user.email"
                 type="email"
-                name="email"
                 class="form-control"
                 placeholder="Email"
               />
@@ -36,8 +37,8 @@
             <div class="from-group">
               <label for="">Cell</label>
               <input
+                v-model="user.cell"
                 type="text"
-                name="cell"
                 class="form-control"
                 placeholder="Cell"
               />
@@ -46,11 +47,14 @@
               <input
                 type="submit"
                 class="btn btn-success btn-block btn-sm mt-2"
+                @click="addNewUser"
                 value="Add user"
               />
             </div>
           </div>
         </div>
+        <!-- End Add new user template -->
+        <!-- All user data template -->
         <div class="card shadow">
           <div class="card-body">
             <h2>All Data</h2>
@@ -87,6 +91,7 @@
             </table>
           </div>
         </div>
+        <!-- End All user data template -->
       </div>
     </div>
 
@@ -106,6 +111,11 @@
         el: "#root",
         data: {
           users: [],
+          user: {
+            name: "",
+            email: "",
+            cell: "",
+          },
         },
         methods: {
           //get all user data method
@@ -113,6 +123,23 @@
             axios.get("inc/data.php").then(function (response) {
               root.users = response.data;
             });
+          },
+          //add new user data method
+          addNewUser: function () {
+            axios
+              .post("inc/add.php", {
+                name: root.user.name,
+                email: root.user.email,
+                cell: root.user.cell,
+              })
+              .then(function (response) {
+                console.log(response.data);
+                root.getAllUser();
+                //data successfully add then blank the form
+                root.user.name = "";
+                root.user.email = "";
+                root.user.cell = "";
+              });
           },
         },
         created: function () {
