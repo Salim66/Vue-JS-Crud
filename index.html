@@ -84,6 +84,7 @@
                   </td>
                   <td>
                     <a
+                      @click="viewSingleUser(user.id)"
                       class="btn btn-sm btn-info"
                       data-toggle="modal"
                       href="#view_user_modal"
@@ -119,22 +120,22 @@
                   margin: auto;
                 "
                 class="shadow"
-                src="./photos/users/61575024.jpg"
+                :src="'photos/users/'+ single.photo"
                 alt=""
               />
-              <h2 class="text-center">Salim Hasan Riad</h2>
-              <table>
+              <h2 class="text-center">{{ single.name }}</h2>
+              <table class="table table-striped">
                 <tr>
                   <td>Name</td>
-                  <td></td>
+                  <td>{{ single.name }}</td>
                 </tr>
                 <tr>
                   <td>Email</td>
-                  <td></td>
+                  <td>{{ single.email }}</td>
                 </tr>
                 <tr>
                   <td>Cell</td>
-                  <td></td>
+                  <td>{{ single.cell }}</td>
                 </tr>
               </table>
             </div>
@@ -161,6 +162,12 @@
         data: {
           users: [],
           user: {
+            name: "",
+            email: "",
+            cell: "",
+            photo: "",
+          },
+          single: {
             name: "",
             email: "",
             cell: "",
@@ -225,6 +232,17 @@
             } else {
               alert("You are safe!");
             }
+          },
+          //view single user action
+          viewSingleUser: function (id) {
+            axios
+              .get("inc/user.php?action=single&id=" + id)
+              .then(function (response) {
+                root.single.name = response.data.name;
+                root.single.email = response.data.email;
+                root.single.cell = response.data.cell;
+                root.single.photo = response.data.photo;
+              });
           },
         },
         created: function () {

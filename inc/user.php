@@ -47,7 +47,7 @@ if ($action == 'create') {
     $email = $_POST['email'];
     $cell = $_POST['cell'];
 
-    // //insert data query
+    //insert data query
     $conn->query("INSERT INTO users (name, email, cell, photo) VALUES ('$name', '$email', '$cell', '$photo_name')");
 }
 
@@ -60,4 +60,17 @@ if ($action == 'delete') {
 
     //delete query
     $conn->query("DELETE FROM users WHERE id='$id'");
+}
+
+/**
+ * Single user view 
+ */
+if ($action == 'single') {
+    //Get user id
+    $id = $_GET['id'];
+
+    //get user data query
+    $data = $conn->query("SELECT * FROM users WHERE id='$id'");
+    $single_data =  $data->fetch_assoc();
+    echo json_encode($single_data);
 }
