@@ -16,7 +16,7 @@
           <div class="card-body">
             <h2>Add new user</h2>
             <hr />
-            <div class="from-group">
+            <div class="form-group">
               <label for="">Name</label>
               <input
                 v-model="user.name"
@@ -25,7 +25,7 @@
                 placeholder="Name"
               />
             </div>
-            <div class="from-group">
+            <div class="form-group">
               <label for="">Email</label>
               <input
                 v-model="user.email"
@@ -34,7 +34,7 @@
                 placeholder="Email"
               />
             </div>
-            <div class="from-group">
+            <div class="form-group">
               <label for="">Cell</label>
               <input
                 v-model="user.cell"
@@ -42,6 +42,10 @@
                 class="form-control"
                 placeholder="Cell"
               />
+            </div>
+            <div class="form-group">
+              <label for="" class="d-block">Upload Photo</label>
+              <input ref="file" type="file" />
             </div>
             <div class="form-group">
               <input
@@ -76,10 +80,7 @@
                   <td>{{ user.email }}</td>
                   <td>{{ user.cell }}</td>
                   <td>
-                    <img
-                      src="assets/media/img/pp_photo/istockphoto-615279718-612x612.jpg"
-                      alt=""
-                    />
+                    <img :src="'photos/users/'+user.photo" alt="" />
                   </td>
                   <td>
                     <a class="btn btn-sm btn-info" href="#">View</a>
@@ -120,6 +121,7 @@
             name: "",
             email: "",
             cell: "",
+            photo: "",
           },
         },
         methods: {
@@ -139,15 +141,23 @@
             ) {
               alert("All fields are required!");
             } else {
+              //get image refarence
+              this.user.photo = root.$refs.file.files[0];
+
               //all data bind by FormData() class
               let userData = new FormData();
 
               userData.append("name", this.user.name);
               userData.append("email", this.user.email);
               userData.append("cell", this.user.cell);
+              userData.append("photo", this.user.photo);
 
               axios
-                .post("inc/user.php?action=create", userData)
+                .post("inc/user.php?action=create", userData, {
+                  headers: {
+                    "Content-Type": "multipart/form-data",
+                  },
+                })
                 .then(function (response) {
                   console.log(response.data);
                   root.getAllUser();
