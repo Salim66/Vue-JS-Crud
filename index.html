@@ -83,7 +83,12 @@
                     <img :src="'photos/users/'+user.photo" alt="" />
                   </td>
                   <td>
-                    <a class="btn btn-sm btn-info" href="#">View</a>
+                    <a
+                      class="btn btn-sm btn-info"
+                      data-toggle="modal"
+                      href="#view_user_modal"
+                      >View</a
+                    >
                     <a class="btn btn-sm btn-warning" href="#">Edit</a>
                     <a
                       class="btn btn-sm btn-danger"
@@ -99,6 +104,44 @@
         </div>
         <!-- End All user data template -->
       </div>
+      <!-- Start View single user by modal -->
+      <div id="view_user_modal" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-body">
+              <img
+                style="
+                  height: 200px;
+                  width: 200px;
+                  border: 5px solid #fff;
+                  border-radius: 50%;
+                  display: block;
+                  margin: auto;
+                "
+                class="shadow"
+                src="./photos/users/61575024.jpg"
+                alt=""
+              />
+              <h2 class="text-center">Salim Hasan Riad</h2>
+              <table>
+                <tr>
+                  <td>Name</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Email</td>
+                  <td></td>
+                </tr>
+                <tr>
+                  <td>Cell</td>
+                  <td></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End View single user by modal -->
     </div>
 
     <!-- JS FILES  -->
