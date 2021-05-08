@@ -30,9 +30,15 @@ if ($action == 'read') {
  * User data add
  */
 if ($action == 'create') {
-    $name = $data->name;
-    $email = $data->email;
-    $cell = $data->cell;
+    //get all user data
+    // $name = $data->name;
+    // $email = $data->email;
+    // $cell = $data->cell;
+
+    //get all user data by $_POST[]
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $cell = $_POST['cell'];
 
     //insert data query
     $conn->query("INSERT INTO users (name, email, cell) VALUES ('$name', '$email', '$cell')");

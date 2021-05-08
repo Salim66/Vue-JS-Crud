@@ -139,12 +139,15 @@
             ) {
               alert("All fields are required!");
             } else {
+              //all data bind by FormData() class
+              let userData = new FormData();
+
+              userData.append("name", this.user.name);
+              userData.append("email", this.user.email);
+              userData.append("cell", this.user.cell);
+
               axios
-                .post("inc/user.php?action=create", {
-                  name: root.user.name,
-                  email: root.user.email,
-                  cell: root.user.cell,
-                })
+                .post("inc/user.php?action=create", userData)
                 .then(function (response) {
                   console.log(response.data);
                   root.getAllUser();
