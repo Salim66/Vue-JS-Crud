@@ -14,9 +14,21 @@
         <!-- Add new user template -->
         <div class="card mb-3" style="width: 400px; margin: auto">
           <div class="card-body">
-            <h2>Add new user</h2>
+            <h2 v-if="edit.name">Edit user</h2>
+            <h2 v-else="edit.name">Add new user</h2>
             <hr />
-            <div class="form-group">
+            <input v-model="edit.id" type="hidden" @:value="edit.id" />
+            <div v-if="edit.name" class="form-group">
+              <label for="">Name</label>
+              <input
+                @:value="edit.name"
+                v-model="edit.name"
+                type="text"
+                class="form-control"
+                placeholder="Name"
+              />
+            </div>
+            <div v-else="edit.name" class="form-group">
               <label for="">Name</label>
               <input
                 v-model="user.name"
@@ -25,7 +37,17 @@
                 placeholder="Name"
               />
             </div>
-            <div class="form-group">
+            <div v-if="edit.email" class="form-group">
+              <label for="">Email</label>
+              <input
+                @:value="edit.email"
+                v-model="edit.email"
+                type="email"
+                class="form-control"
+                placeholder="Email"
+              />
+            </div>
+            <div v-else="edit.email" class="form-group">
               <label for="">Email</label>
               <input
                 v-model="user.email"
@@ -34,7 +56,17 @@
                 placeholder="Email"
               />
             </div>
-            <div class="form-group">
+            <div v-if="edit.cell" class="form-group">
+              <label for="">Cell</label>
+              <input
+                @:value="edit.cell"
+                v-model="edit.cell"
+                type="text"
+                class="form-control"
+                placeholder="Cell"
+              />
+            </div>
+            <div v-else="edit.cell" class="form-group">
               <label for="">Cell</label>
               <input
                 v-model="user.cell"
@@ -43,11 +75,28 @@
                 placeholder="Cell"
               />
             </div>
-            <div class="form-group">
+            <div v-if="edit.photo" class="form-group">
+              <label for="" class="d-block">Upload Photo</label>
+              <input ref="file" type="file" @:value="edit.photo" />
+              <img
+                style="height: 100px; width: 120px; margin-top: 2px"
+                :src="'photos/users/'+edit.photo"
+                alt=""
+              />
+            </div>
+            <div v-else="edit.photo" class="form-group">
               <label for="" class="d-block">Upload Photo</label>
               <input ref="file" type="file" />
             </div>
-            <div class="form-group">
+            <div v-if="edit.name" class="form-group">
+              <input
+                type="submit"
+                class="btn btn-success btn-block btn-sm mt-2"
+                @click="updateUser"
+                value="Edit user"
+              />
+            </div>
+            <div v-else="edit.name" class="form-group">
               <input
                 type="submit"
                 class="btn btn-success btn-block btn-sm mt-2"
@@ -97,7 +146,12 @@
                       href="#view_user_modal"
                       >View</a
                     >
-                    <a class="btn btn-sm btn-warning" href="#">Edit</a>
+                    <a
+                      @click="editUserData(user.id, $event)"
+                      class="btn btn-sm btn-warning"
+                      href="#"
+                      >Edit</a
+                    >
                     <a
                       class="btn btn-sm btn-danger"
                       href="#"
@@ -180,6 +234,13 @@
             cell: "",
             photo: "",
           },
+          edit: {
+            name: "",
+            email: "",
+            cell: "",
+            photo: "",
+            id: "",
+          },
           search: "",
         },
         methods: {
@@ -258,6 +319,40 @@
               .get("inc/user.php?action=search&search=" + root.search)
               .then(function (response) {
                 root.users = response.data;
+              });
+          },
+          //edit user data action
+          editUserData: function (id, event) {
+            event.preventDefault();
+            axios
+              .get("inc/user.php?action=edit&id=" + id)
+              .then(function (response) {
+                root.edit = response.data;
+                console.log(response.data);
+              });
+          },
+          //update user data action
+          updateUser: function () {
+            //get image refarence
+            this.edit.photo = root.$refs.file.files[0];
+
+            //update data get
+            let updateData = new FormData();
+
+            updateData.append("name", this.edit.name);
+            updateData.append("email", this.edit.email);
+            updateData.append("cell", this.edit.cell);
+            updateData.append("photo", this.edit.photo);
+            updateData.append("id", this.edit.id);
+
+            axios
+              .post("inc/user.php?action=update", updateData, {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              })
+              .then(function (response) {
+                root.getAllUser();
               });
           },
         },

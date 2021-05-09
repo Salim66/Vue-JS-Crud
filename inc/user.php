@@ -92,3 +92,44 @@ if ($action == 'search') {
 
     echo json_encode($user_result);
 }
+
+/**
+ * Edit user data
+ */
+if ($action == 'edit') {
+    //Get user id
+    $id = $_GET['id'];
+
+    //GEt user data query
+    $data = $conn->query("SELECT * FROM users WHERE id='$id'");
+
+    //associative data convert to json format
+    echo json_encode($data->fetch_assoc());
+}
+
+/**
+ * Update user data
+ */
+if ($action == 'update') {
+
+    //Get user Value
+    $id = $_POST['id'];
+    $name = $_POST['name'];
+    $email =  $_POST['email'];
+    $cell = $_POST['cell'];
+
+    $photo_name = '';
+    if (isset($_FILES['photo'])) {
+        $photo_name = $_FILES['photo']['name'];
+        $photo_tmp_name = $_FILES['photo']['tmp_name'];
+
+        //upload photo
+        move_uploaded_file($photo_tmp_name, '../photos/users/' . $photo_name);
+    } else {
+
+        $photo_name = $_POST['photo'];
+    }
+
+    //update user data query
+    $conn->query("UPDATE users SET name='$name', email='$email', cell='$cell', photo='$photo_name' WHERE id='$id'");
+}
